@@ -28,12 +28,6 @@ char getch() {
                 perror ("tcsetattr ~ICANON");
         return (buf);
 }
-void handleInput(){
-    while(true){
-        input = getch();
-    }
-}
-
 
 void draw(int _grid[10][25]){
     for(int i = 0; i < 25; i++){
@@ -204,7 +198,13 @@ piece* randomSelect(){
 
 int main(){
     srand(time(NULL));
-    thread listen(handleInput);
+    auto f = [](){
+        while(true){
+            input = getch();
+        }
+    };
+    thread listen(f);
+
 
     int grid[10][25] = {0};
 
