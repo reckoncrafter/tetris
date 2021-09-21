@@ -4,6 +4,8 @@
 #include "constrained.h"
 using namespace std;
 
+bool endGame = false;
+
 void draw(int _grid[10][25]){
     for(int i = 0; i < 25; i++){
         for(int j = 0; j < 10; j++){
@@ -21,7 +23,7 @@ void draw(int _grid[10][25]){
     }
 }
 void undraw(){
-            for(int i = 0; i < 27; i++){
+            for(int i = 0; i < 25; i++){
                 cout << "\033[A" << "\r";
             }
         }
@@ -58,6 +60,11 @@ struct piece{
     //    [*]
 
 void spawn(const piece block, int grid[10][25], int posx = 0, int posy = 0){
+    for(int i = 0; i < 10; i++){
+        if(grid[i][0] != 0){
+            endGame = true;
+        }
+    }
     for(int i = 0; i < 4; i++){
         grid[block.blk[i].x+block.offset.x][block.blk[i].y+block.offset.y] = 1;
     }
@@ -107,7 +114,7 @@ void step(piece block[4], int grid[10][25]){
 piece* randomSelect(){
     piece* p = new piece;
     int r = rand()%7;
-    cout << r;
+    //cout << r;
     switch(r){
         case 0:
             for(int i = 0; i < 4; i++){
@@ -162,20 +169,22 @@ int main(){
         piece* p = randomSelect();
         p->offset.x = 4;
         p->offset.y = 0;
-
+        if(endGame){
+            break;
+        }
 
         while(true){
             spawn(*p, grid);
+            draw(grid);
             if(Colliders(*p,grid)){
                 break;
             };
-            draw(grid);
             sleep(1);
-            undraw();
             despawn(*p, grid);
             step(p, grid);
+            undraw();
         }
-        draw(grid);
+        undraw();
     }
     return 0;
 
