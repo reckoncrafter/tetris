@@ -1,10 +1,33 @@
 #include <iostream>
 #include <unistd.h>
 #include <random>
+#include <termios.h>
+#include <thread>
 #include "constrained.h"
 using namespace std;
 
-bool endFlag = false;
+bool endGame = false;
+char input = '\0';
+
+char getch() {
+        char buf = 0;
+        struct termios old = {0};
+        if (tcgetattr(0, &old) < 0)
+                perror("tcsetattr()");
+        old.c_lflag &= ~ICANON;
+        old.c_lflag &= ~ECHO;
+        old.c_cc[VMIN] = 1;
+        old.c_cc[VTIME] = 0;
+        if (tcsetattr(0, TCSANOW, &old) < 0)
+                perror("tcsetattr ICANON");
+        if (read(0, &buf, 1) < 0)
+                perror ("read()");
+        old.c_lflag |= ICANON;
+        old.c_lflag |= ECHO;
+        if (tcsetattr(0, TCSADRAIN, &old) < 0)
+                perror ("tcsetattr ~ICANON");
+        return (buf);
+}
 
 void draw(int _grid[10][25]){
     for(int i = 0; i < 25; i++){
@@ -12,9 +35,11 @@ void draw(int _grid[10][25]){
             if(_grid[j][i] == 1){
                 cout << "[*]";
             }
+            /*
             else if(_grid[j][i]== -1){
                 cout << "[X]";
             }
+            */
             else{
                 cout << "[ ]";
             }
@@ -62,14 +87,13 @@ struct piece{
 void spawn(const piece block, int grid[10][25], int posx = 0, int posy = 0){
     for(int i = 0; i < 10; i++){
         if(grid[i][0] != 0){
-            endFlag = true;
+            endGame = true;
         }
     }
     for(int i = 0; i < 4; i++){
         grid[block.blk[i].x+block.offset.x][block.blk[i].y+block.offset.y] = 1;
     }
 }
-
 void despawn(const piece block, int grid[10][25]){
     for(int i = 0; i < 4; i++){
         grid[block.blk[i].x+block.offset.x][block.blk[i].y+block.offset.y] = 0;
@@ -87,7 +111,7 @@ void fall(const point block[4], int grid[10][25], int& gravity){
 }
 
 bool Colliders(const piece block, int grid[10][25]){
-    point* colliders = new point[4]();
+    point* colliders = new point[4]{0};
     bool collision = false;
 
     for(int i = 0; i < 4; i++){
@@ -99,7 +123,7 @@ bool Colliders(const piece block, int grid[10][25]){
             if(*below == 1){
                 collision = true;
             }
-            *below = -1;
+            //*below = -1;
         }
         grid[block.blk[i].x+block.offset.x][block.blk[i].y+block.offset.y] = 1;
     }
@@ -109,6 +133,22 @@ bool Colliders(const piece block, int grid[10][25]){
 void step(piece block[4], int grid[10][25]){
     for(int i = 0; i < 4; i++){
         block[i].offset.y += 1;
+    }
+}
+void translate(piece block[4], int grid[10][25], char direction){
+    switch(direction){
+        case 'a':   
+            for(int i = 0; i < 4; i++){
+                block[i].offset.x -= 1;
+            }
+        break;
+        case 'd':
+            for(int i = 0; i < 4; i++){
+                block[i].offset.x += 1;
+            }
+        break;
+        default:
+        break;
     }
 }
 
@@ -158,6 +198,14 @@ piece* randomSelect(){
 
 int main(){
     srand(time(NULL));
+    auto f = [](){
+        while(true){
+            input = getch();
+        }
+    };
+    thread listen(f);
+
+
     int grid[10][25] = {0};
 
     // TEST FLOOR
@@ -170,10 +218,9 @@ int main(){
         piece* p = randomSelect();
         p->offset.x = 4;
         p->offset.y = 0;
-        if(endFlag){
+        if(endGame){
             break;
         }
-
 
         while(true){
             spawn(*p, grid);
@@ -184,6 +231,10 @@ int main(){
             sleep(1);
             despawn(*p, grid);
             step(p, grid);
+            if(input != '\0'){
+                translate(p, grid, input);
+                input = '\0';
+            }
             undraw();
         }
         undraw();
