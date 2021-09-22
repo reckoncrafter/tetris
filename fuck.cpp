@@ -3,7 +3,7 @@
 #include <random>
 #include <termios.h>
 #include <thread>
-#include "constrained.h"
+//#include "constrained.h"
 using namespace std;
 
 bool endGame = false;
@@ -63,10 +63,10 @@ struct piece{
     point offset;
 };
 
-    point L_l[4] = {{0,0}, {0,1}, {1,1}, {1,2}};
+    point L_l[4] = {{0,1}, {0,0}, {1,0}, {2,0}};
     // [*]
     // [*][*][*]
-    point L_r[4] = {{0,2}, {1,0}, {1,1}, {1,2}};
+    point L_r[4] = {{0,0}, {1,0}, {2,0}, {2,1}};
     //       [*]
     // [*][*][*]
     point O[4] = {{0,0}, {0,1}, {1,0}, {1,1}};
@@ -74,13 +74,13 @@ struct piece{
     // [*][*]
     point I[4] = {{0,0}, {1,0}, {2,0}, {3,0}};
     // [*][*][*][*]
-    point S_l[4] = {{0,0}, {1,0}, {1,1}, {2,1}};
+    point S_l[4] = {{0,1}, {1,1}, {1,0}, {2,0}};
     // [*][*]
     //    [*][*]
-    point S_r[4] = {{1,0}, {2,0}, {0,1}, {1,1}};
+    point S_r[4] = {{0,0}, {1,0}, {1,1}, {2,1}};
     //    [*][*]
     // [*][*]
-    point T[4] = {{0,0}, {1,0}, {2,0}, {1,1}};
+    point T[4] = {{1,0}, {1,1}, {2,1}, {0,1}};
     // [*][*][*]
     //    [*]
 
@@ -111,7 +111,7 @@ void fall(const point block[4], int grid[10][25], int& gravity){
 }
 
 bool Colliders(const piece block, int grid[10][25]){
-    point* colliders = new point[4]{0};
+    point* colliders = new point[4]();
     bool collision = false;
 
     for(int i = 0; i < 4; i++){
@@ -135,7 +135,7 @@ void step(piece block[4], int grid[10][25]){
         block[i].offset.y += 1;
     }
 }
-void translate(piece block[4], int grid[10][25], char direction){
+void translate(piece block[4], char direction){
     switch(direction){
         case 'a':   
             for(int i = 0; i < 4; i++){
@@ -149,6 +149,19 @@ void translate(piece block[4], int grid[10][25], char direction){
         break;
         default:
         break;
+    }
+}
+void rotate90clockwise(piece block){
+    for(int i = 0; i < 4; i++){
+        block.blk[i].x *= -1;
+    }
+}
+void snap(piece block[4], int grid[10][25]){
+    while(true){
+        if(Colliders(*block,grid)){
+            break;
+        }
+        step(block,grid);
     }
 }
 
@@ -231,9 +244,26 @@ int main(){
             sleep(1);
             despawn(*p, grid);
             step(p, grid);
-            if(input != '\0'){
-                translate(p, grid, input);
-                input = '\0';
+            switch(input){
+                case 'd':
+                    translate(p, 'd');
+                    input = '\0';
+                    break;
+                case 'a':
+                    translate(p, 'a');
+                    input = '\0';
+                    break;
+                case 's':
+                    // WAY FUCKED UP:
+                    // snap(p, grid);
+                    input = '\0';
+                    break;
+                case 'r':
+                    rotate90clockwise(*p);
+                    input = '\0';
+                    break;
+                default:
+                    break;
             }
             undraw();
         }
