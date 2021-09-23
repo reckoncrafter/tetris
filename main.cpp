@@ -1,6 +1,4 @@
 #include "main.hpp"
-#include "tetriminos.hpp"
-#include "constrained.h"
 
 
 #define TICK 65536
