@@ -23,6 +23,8 @@ char getch() {
         return (buf);
 }
 
+enum Rotation{Zeroth = 0, First = 4, Second = 8, Third = 12};
+
 struct point{
     int x,y;
 };
@@ -107,26 +109,37 @@ namespace tetriminos{
 class Piece{
 public:
     int revolver = 0;
-    point shape[4];
+    point shape[4*4];
+
     point offset;
     
 
     Piece(){
-        for(int i = 0; i < 4; i++){
+        for(int i = 0; i < 16; i++){
             shape[i] = {0,0};
         }
     }
-    
-    void operator=(point T[4]){
+    Piece(point r0[4], point r1[4], point r2[4], point r3[4]){
         for(int i = 0; i < 4; i++){
-            this->shape[i] = T[i];
+            shape[i] = r0[i];
         }
-    }
+        for(int i = 0; i < 4; i++){
+            shape[i+4] = r1[i];
+        }
+        for(int i = 0; i < 4; i++){
+            shape[i+8] = r2[i];
+        }
+        for(int i = 0; i < 4; i++){
+            shape[i+12] = r3[i];
+        }
+    };
+    
     void down(Field F, int I);
     void up(Field F, int I);
     void left(Field F, int I);
     void right(Field F, int I);
 };
+
 class Field{
     public:
     int grid[12][27] = {0};
@@ -141,42 +154,35 @@ class Field{
             grid[i][27] = 1;
         }
     }
-    void spawn(Piece P){
+    void spawn(Piece P, Rotation r){
         for(int i = 0; i < 4; i++){
-            grid[P.shape[i].x + P.offset.x][P.shape[i].y + P.offset.y] = 1;
+            grid[P.shape[i+r].x + P.offset.x][P.shape[i+r].y + P.offset.y] = 1;
         }
     }
-    void despawn(Piece P){
+    void despawn(Piece P, Rotation r){
         for(int i = 0; i < 4; i++){
-            grid[P.shape[i].x + P.offset.x][P.shape[i].y + P.offset.y] = 0;
+            grid[P.shape[i+r].x + P.offset.x][P.shape[i+r].y + P.offset.y] = 0;
         }
     }
-    void down(Piece &P, int I){
-        despawn(P);
+    void down(Piece &P, int I, Rotation r){
+        despawn(P,r);
         P.offset.y -= I;
-        spawn(P);
+        spawn(P,r);
     }
-    void up(Piece &P, int I){
-        despawn(P);
+    void up(Piece &P, int I, Rotation r){
+        despawn(P,r);
         P.offset.y += I;
-        spawn(P);
+        spawn(P,r);
     }
-    void right(Piece &P, int I){
-        despawn(P);
+    void right(Piece &P, int I, Rotation r){
+        despawn(P,r);
         P.offset.x += I;
-        spawn(P);
+        spawn(P,r);
     }
-    void left(Piece &P, int I){
-        despawn(P);
+    void left(Piece &P, int I, Rotation r){
+        despawn(P,r);
         P.offset.x -= I;
-        spawn(P);
-    }
-    void replace(Piece &P, point re[4]){
-        despawn(P);
-        for(int i = 0; i < 4; i++){
-            P = re;
-        }
-        spawn(P);
+        spawn(P,r);
     }
     void draw(){
         for(int i = 27; i >= 0; i--){
@@ -205,21 +211,21 @@ class Field{
             std::cout << "\033[A" << "\r";
         }
     }
-    bool Colliders(const Piece P){
+    bool Colliders(const Piece P, Rotation r){
         point* colliders = new point[4]();
         bool collision = false;
 
         for(int i = 0; i < 4; i++){
-            grid[P.shape[i].x+P.offset.x][P.shape[i].y+P.offset.y] = 2;
+            grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y] = 2;
         }
         for(int i = 0; i < 4; i++){
-            int* below = &grid[P.shape[i].x+P.offset.x][(P.shape[i].y+P.offset.y)-1];
+            int* below = &grid[P.shape[i+r].x+P.offset.x][(P.shape[i+r].y+P.offset.y)-1];
             if(*below == 1){
                 collision = true;
             }
         }
         for(int i = 0; i < 4; i++){
-            grid[P.shape[i].x+P.offset.x][P.shape[i].y+P.offset.y] = 1;
+            grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y] = 1;
         }
         
         /*
@@ -236,5 +242,4 @@ class Field{
         */
         return collision;
     }
-
 };
