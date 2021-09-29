@@ -24,6 +24,25 @@ char getch() {
 }
 
 enum Rotation{Zeroth = 0, First = 4, Second = 8, Third = 12};
+Rotation& operator ++(Rotation& r){
+    switch(r){
+        case Zeroth:
+            r = First;
+            break;
+        case First:
+            r = Second;
+            break;
+        case Second:
+            r = Third;
+            break;
+        case Third:
+            r = Zeroth;
+            break;
+        default:
+            break;
+    }
+    return r;
+} 
 
 struct point{
     int x,y;

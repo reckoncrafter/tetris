@@ -31,7 +31,7 @@ int main(){
     }
     */
 
-    Rotation R = Third;
+    Rotation R = Zeroth;
     while(true){
         gameBoard.spawn(Test, R);
         while(true){
@@ -49,28 +49,13 @@ int main(){
                     case 'd':
                         gameBoard.right(Test, 1, R);
                         break;
-                    /*
                     case 'r':
-                        switch(revolver){
-                            case 0:
-                                gameBoard.
-                                revolver++;
-                                break;
-                            case 1:
-                                gameBoard.
-                                revolver++;
-                                break;
-                            case 2:
-                                gameBoard.
-                                revolver++;
-                                break;
-                            case 3:
-                                gameBoard.
-                                revolver = 0;
-                                break;
-                    */
-                        default:
-                            break;
+                        gameBoard.despawn(Test, R);
+                        operator ++(R);
+                        gameBoard.spawn(Test, R);
+                        
+                    default:
+                        break;
                 }
                 INPUT = '\0';
             }
