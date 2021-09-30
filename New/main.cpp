@@ -1,6 +1,8 @@
 #include "main.hpp"
 #include "constrained.h"
 
+#define TICK 65536
+
 using namespace std;
 
 volatile char INPUT = '\0';
@@ -31,7 +33,9 @@ int main(){
     }
     */
 
+    
     Rotation R = Zeroth;
+    /*
     while(true){
         gameBoard.spawn(Test, R);
         while(true){
@@ -62,6 +66,40 @@ int main(){
             gameBoard.down(Test, 1, R);
             gameBoard.undraw();
         }
+    }
+    */
+   int intervalCounter = 0;
+    while(true){
+        gameBoard.draw();
+        usleep(TICK);
+        intervalCounter++;
+        
+        if(INPUT != '\0'){
+            switch(INPUT){
+                case 'a':
+                    gameBoard.left(Test, 1, R);
+                    break;
+                case 'd':
+                    gameBoard.right(Test, 1, R);
+                    break;
+                case 'r':
+                    gameBoard.despawn(Test, R);
+                    operator ++(R);
+                    gameBoard.spawn(Test, R);
+                        
+                default:
+                    break;
+            }
+            INPUT = '\0';
+        }
+        if(gameBoard.Colliders(Test, R)){
+            break;
+        }        
+        if(intervalCounter == 8){
+            gameBoard.down(Test,1,R);
+            intervalCounter = 0;
+        }
+        gameBoard.undraw();
     }
     return 0;
 }
