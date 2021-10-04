@@ -230,35 +230,57 @@ class Field{
             std::cout << "\033[A" << "\r";
         }
     }
-    bool Colliders(const Piece P, Rotation r){
+    bool Colliders(const Piece P, Rotation r, char side){
+        // TODO: Add right and left collision detection
         point* colliders = new point[4]();
         bool collision = false;
-
-        for(int i = 0; i < 4; i++){
-            grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y] = 2;
-        }
-        for(int i = 0; i < 4; i++){
-            int* below = &grid[P.shape[i+r].x+P.offset.x][(P.shape[i+r].y+P.offset.y)-1];
-            if(*below == 1){
-                collision = true;
-            }
-        }
-        for(int i = 0; i < 4; i++){
-            grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y] = 1;
-        }
-        
-        /*
-        for(int i = 0; i < 4; i++){
-            int* below = &grid[P.shape[i].x+P.offset.x][(P.shape[i].y+P.offset.y)-1];
-            if(*below != 2){
-                if(*below == 1){
-                    collision = true;
+        switch(side){
+            case 'd':
+                for(int i = 0; i < 4; i++){
+                    grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y] = 2;
                 }
-                *below = -1;
-            }
-            grid[P.shape[i].x+P.offset.x][P.shape[i].y+P.offset.y] = 1;
+                for(int i = 0; i < 4; i++){
+                    int* below = &grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y-1];
+                    if(*below == 1){
+                        collision = true;
+                    }
+                }
+                for(int i = 0; i < 4; i++){
+                    grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y] = 1;
+                }
+                break;
+            case 'l':
+                for(int i = 0; i < 4; i++){
+                    grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y] = 2;
+                }
+                for(int i = 0; i < 4; i++){
+                    int* atleft = &grid[P.shape[i+r].x+P.offset.x-1][P.shape[i+r].y+P.offset.y];
+                    if(*atleft == 1){
+                        collision = true;
+                    }
+                }
+                for(int i = 0; i < 4; i++){
+                    grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y] = 1;
+                }
+                break;
+
+            case 'r':
+                for(int i = 0; i < 4; i++){
+                    grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y] = 2;
+                }
+                for(int i = 0; i < 4; i++){
+                    int* atright = &grid[P.shape[i+r].x+P.offset.x+1][P.shape[i+r].y+P.offset.y];
+                    if(*atright == 1){
+                        collision = true;
+                    }
+                }
+                for(int i = 0; i < 4; i++){
+                    grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y] = 1;
+                }
+                break;
+            default:
+                break;
         }
-        */
         return collision;
     }
 };

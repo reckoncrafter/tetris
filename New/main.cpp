@@ -77,23 +77,34 @@ int main(){
         if(INPUT != '\0'){
             switch(INPUT){
                 case 'a':
+                    if(gameBoard.Colliders(Test, R, 'l')){
+                        break;
+                    }
                     gameBoard.left(Test, 1, R);
                     break;
                 case 'd':
+                    if(gameBoard.Colliders(Test, R, 'r')){
+                        break;
+                    }
                     gameBoard.right(Test, 1, R);
                     break;
                 case 'r':
                     gameBoard.despawn(Test, R);
                     operator ++(R);
                     gameBoard.spawn(Test, R);
+                    break;
+                case 's':
+                    gameBoard.down(Test, 1, R);
+                    break;
                         
                 default:
                     break;
             }
             INPUT = '\0';
         }
-        if(gameBoard.Colliders(Test, R)){
-            break;
+        if(gameBoard.Colliders(Test, R, 'd')){
+            gameBoard.undraw();
+            continue;
         }        
         if(intervalCounter == 8){
             gameBoard.down(Test,1,R);
