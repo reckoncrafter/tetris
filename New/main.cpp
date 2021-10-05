@@ -105,6 +105,7 @@ int main(){
         if(gameBoard.Colliders(Test, R, 'd')){
             gameBoard.undraw();
             continue;
+            // breaking here causes a core dump
         }        
         if(intervalCounter == 8){
             gameBoard.down(Test,1,R);
