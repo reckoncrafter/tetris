@@ -1,4 +1,4 @@
-tetris :
-	g++ -std=c++11 -pthread fuck.cpp -o tetris
-clean :
+tetris:
+	g++ -std=c++11 -pthread main.cpp -o tetris
+clean:
 	rm tetris

@@ -24,12 +24,12 @@ class constrained{
         return x;
     }
     T operator+=(T x){
-        if(this->val+x < lowerbound){
-            x = lowerbound;
+        if(this.val+x < lowerbound){
+            this->x = lowerbound;
             return lowerbound;
         }
-        if(this->val+x > upperbound){
-            x = lowerbound;
+        if(this.val+x > upperbound){
+            this-> x = lowerbound;
             return upperbound;
         }
         this->val = this->val+x;
