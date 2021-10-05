@@ -2,6 +2,8 @@
 #include <termios.h>
 #include <unistd.h>
 #include <thread>
+#include <random>
+#include <time.h>
 
 char getch() {
         char buf = 0;
@@ -138,7 +140,7 @@ public:
             shape[i] = {0,0};
         }
     }
-    Piece(point r0[4], point r1[4], point r2[4], point r3[4]){
+    void init(point r0[4], point r1[4], point r2[4], point r3[4]){
         for(int i = 0; i < 4; i++){
             shape[i] = r0[i];
         }
@@ -219,8 +221,6 @@ class Field{
                         break;
                 }
                 
-               //std::cout << '[' << grid[j][i] << ']';
-                
             }
             std::cout << std::endl;
         }
@@ -231,16 +231,16 @@ class Field{
         }
     }
     bool Colliders(const Piece P, Rotation r, char side){
-        // TODO: Add right and left collision detection
         point* colliders = new point[4]();
         bool collision = false;
         switch(side){
-            case 'd':
+            case 'd': // below (down)
                 for(int i = 0; i < 4; i++){
                     grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y] = 2;
                 }
                 for(int i = 0; i < 4; i++){
                     int* below = &grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y-1];
+                                                                                        //  ^
                     if(*below == 1){
                         collision = true;
                     }
@@ -249,12 +249,13 @@ class Field{
                     grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y] = 1;
                 }
                 break;
-            case 'l':
+            case 'l': // left side
                 for(int i = 0; i < 4; i++){
                     grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y] = 2;
                 }
                 for(int i = 0; i < 4; i++){
                     int* atleft = &grid[P.shape[i+r].x+P.offset.x-1][P.shape[i+r].y+P.offset.y];
+                                                                //^
                     if(*atleft == 1){
                         collision = true;
                     }
@@ -264,12 +265,13 @@ class Field{
                 }
                 break;
 
-            case 'r':
+            case 'r': // right side
                 for(int i = 0; i < 4; i++){
                     grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y] = 2;
                 }
                 for(int i = 0; i < 4; i++){
                     int* atright = &grid[P.shape[i+r].x+P.offset.x+1][P.shape[i+r].y+P.offset.y];
+                                                                // ^
                     if(*atright == 1){
                         collision = true;
                     }

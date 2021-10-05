@@ -8,6 +8,7 @@ using namespace std;
 volatile char INPUT = '\0';
 
 int main(){
+    srand(time(NULL));
     Field gameBoard;
     auto inputEvent = [](){
         while(true){
@@ -16,59 +17,32 @@ int main(){
     };
     thread handler(inputEvent);
 
-    Piece Test(tetriminos::T,tetriminos::FirstRotation::T,tetriminos::SecondRotation::T,tetriminos::ThirdRotation::T);
-    Test.offset.x = 5;
-    Test.offset.y = 20;
-
-    /*
-    Piece pieces[5];
-        pieces[0] = tetriminos::T;
-        pieces[1] = tetriminos::S_l;
-        pieces[2] = tetriminos::S_r;
-        pieces[3] = tetriminos::O;
-        pieces[4] = tetriminos::I;
-    for(int i = 0; i < 5; i++){
-        pieces[i].offset.x = 5;
-        pieces[i].offset.y = 10;
-    }
-    */
-
     
-    Rotation R = Zeroth;
-    /*
-    while(true){
-        gameBoard.spawn(Test, R);
-        while(true){
-            gameBoard.draw();
-            sleep(1);
-            if(gameBoard.Colliders(Test, R)){
-                gameBoard.undraw();
-                break;
-            }
-            if(INPUT != '\0'){
-                switch(INPUT){
-                    case 'a':
-                        gameBoard.left(Test, 1, R);
-                        break;
-                    case 'd':
-                        gameBoard.right(Test, 1, R);
-                        break;
-                    case 'r':
-                        gameBoard.despawn(Test, R);
-                        operator ++(R);
-                        gameBoard.spawn(Test, R);
-                        
-                    default:
-                        break;
-                }
-                INPUT = '\0';
-            }
-            gameBoard.down(Test, 1, R);
-            gameBoard.undraw();
-        }
+    Piece roster[7];
+    roster[0].init(tetriminos::L_l,tetriminos::FirstRotation::L_l,tetriminos::SecondRotation::L_l,tetriminos::ThirdRotation::L_l);
+    roster[1].init(tetriminos::L_r,tetriminos::FirstRotation::L_r,tetriminos::SecondRotation::L_r,tetriminos::ThirdRotation::L_r);
+    roster[2].init(tetriminos::O,tetriminos::O,tetriminos::O,tetriminos::O);
+    roster[3].init(tetriminos::I,tetriminos::FirstRotation::I,tetriminos::I,tetriminos::FirstRotation::I);
+    roster[4].init(tetriminos::S_l,tetriminos::FirstRotation::S_l,tetriminos::S_l,tetriminos::FirstRotation::S_l);
+    roster[5].init(tetriminos::S_r,tetriminos::FirstRotation::S_r,tetriminos::S_r,tetriminos::FirstRotation::S_r);
+    roster[6].init(tetriminos::T,tetriminos::FirstRotation::T,tetriminos::SecondRotation::T,tetriminos::ThirdRotation::T);
+    
+    for(int i = 0; i < 7; i++){
+        roster[i].offset.x = 5;
+        roster[i].offset.y = 20;
     }
+    
+
+    /*
+    Piece test;
+    test.init(tetriminos::S_l,tetriminos::FirstRotation::S_l,tetriminos::S_l,tetriminos::FirstRotation::S_l);
+    test.offset.x = 5;
+    test.offset.y = 10;
     */
-   int intervalCounter = 0;
+    int sel = rand()%6;
+    Rotation R = Zeroth;
+    int intervalCounter = 0;
+    Piece curr = roster[sel];
     while(true){
         gameBoard.draw();
         usleep(TICK);
@@ -77,24 +51,24 @@ int main(){
         if(INPUT != '\0'){
             switch(INPUT){
                 case 'a':
-                    if(gameBoard.Colliders(Test, R, 'l')){
+                    if(gameBoard.Colliders(curr, R, 'l')){
                         break;
                     }
-                    gameBoard.left(Test, 1, R);
+                    gameBoard.left(curr, 1, R);
                     break;
                 case 'd':
-                    if(gameBoard.Colliders(Test, R, 'r')){
+                    if(gameBoard.Colliders(curr, R, 'r')){
                         break;
                     }
-                    gameBoard.right(Test, 1, R);
+                    gameBoard.right(curr, 1, R);
                     break;
                 case 'r':
-                    gameBoard.despawn(Test, R);
+                    gameBoard.despawn(curr, R);
                     operator ++(R);
-                    gameBoard.spawn(Test, R);
+                    gameBoard.spawn(curr, R);
                     break;
                 case 's':
-                    gameBoard.down(Test, 1, R);
+                    gameBoard.down(curr, 1, R);
                     break;
                         
                 default:
@@ -102,13 +76,15 @@ int main(){
             }
             INPUT = '\0';
         }
-        if(gameBoard.Colliders(Test, R, 'd')){
+        if(gameBoard.Colliders(curr, R, 'd')){
             gameBoard.undraw();
+            sel = rand()%6;
+            curr = roster[sel];
             continue;
             // breaking here causes a core dump
         }        
         if(intervalCounter == 8){
-            gameBoard.down(Test,1,R);
+            gameBoard.down(curr,1,R);
             intervalCounter = 0;
         }
         gameBoard.undraw();
