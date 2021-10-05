@@ -9,5 +9,6 @@ An implementation of Tetris that runs in the terminal, written for practice in C
 - [ ] Add line elimination
 - [ ] Add end game state
 - [ ] Add block sliding
+- [ ] Add correct tetromino alignments
 - [ ] Add tetris standard drop order
 - [ ] Add color graphics
