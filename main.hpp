@@ -167,12 +167,12 @@ class Field{
 
     Field(){
         for(int i = 0; i < 27; i++){
-            grid[0][i] = 1;
-            grid[11][i] = 1;
+            grid[0][i] = 9;
+            grid[11][i] = 9;
         }
         for(int i = 0; i < 12; i++){
-            grid[i][0] = 1;
-            grid[i][27] = 1;
+            grid[i][0] = 9;
+            grid[i][27] = 9;
         }
     }
     void spawn(Piece P, Rotation r){
@@ -216,6 +216,9 @@ class Field{
                     case 1:
                         std::cout << "[*]";
                         break;
+                    case 9:
+                        std::cout << "[#]";
+                        break;
                     default:
                         std::cout << "[E]";
                         break;
@@ -230,6 +233,39 @@ class Field{
             std::cout << "\033[A" << "\r";
         }
     }
+    bool Eliminate(){
+        bool elim = true;
+        bool rtn = false;
+        for(int i = 1; i < 27; i++){
+            elim = true;
+            for(int j = 1; j < 11; j++){
+                if(grid[j][i] == 0){
+                    elim = false;
+                }
+            }
+            if(elim){
+                for(int j = 1; j < 11; j++){
+                    grid[j][i] = 0;
+                }
+                rtn = true;
+            }
+        }
+        return rtn;
+    }
+    void pointswap(int &x, int &y){
+        int temp = x;
+        x = y;
+        y = temp;
+    }
+    void Cascade(){
+         for(int i = 1; i < 27; i++){
+            for(int j = 1; j < 11; j++){
+                if(grid[j][i] == 1){
+                    pointswap(grid[j][i], grid[j][i-1]);
+                }
+            }
+         }
+    }
     bool Colliders(const Piece P, Rotation r, char side){
         point* colliders = new point[4]();
         bool collision = false;
@@ -241,7 +277,7 @@ class Field{
                 for(int i = 0; i < 4; i++){
                     int* below = &grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y-1];
                                                                                         //  ^
-                    if(*below == 1){
+                    if(*below == 1 || *below == 9){
                         collision = true;
                     }
                 }
@@ -256,7 +292,7 @@ class Field{
                 for(int i = 0; i < 4; i++){
                     int* atleft = &grid[P.shape[i+r].x+P.offset.x-1][P.shape[i+r].y+P.offset.y];
                                                                 //^
-                    if(*atleft == 1){
+                    if(*atleft == 1 || *atleft == 9){
                         collision = true;
                     }
                 }
@@ -272,7 +308,7 @@ class Field{
                 for(int i = 0; i < 4; i++){
                     int* atright = &grid[P.shape[i+r].x+P.offset.x+1][P.shape[i+r].y+P.offset.y];
                                                                 // ^
-                    if(*atright == 1){
+                    if(*atright == 1 || *atright == 9){
                         collision = true;
                     }
                 }

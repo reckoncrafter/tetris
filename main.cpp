@@ -70,13 +70,15 @@ int main(){
                 case 's':
                     gameBoard.down(curr, 1, R);
                     break;
-                        
                 default:
                     break;
             }
             INPUT = '\0';
         }
         if(gameBoard.Colliders(curr, R, 'd')){
+            if(gameBoard.Eliminate()){
+                gameBoard.Cascade();
+            }
             gameBoard.undraw();
             sel = rand()%6;
             curr = roster[sel];
