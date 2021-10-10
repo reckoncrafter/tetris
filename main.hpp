@@ -1,6 +1,7 @@
 #include <iostream>
 #include <termios.h>
 #include <unistd.h>
+#include <getopt.h>
 #include <thread>
 #include <random>
 #include <time.h>

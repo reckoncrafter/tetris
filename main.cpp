@@ -4,8 +4,27 @@
 using namespace std;
 
 volatile char INPUT = '\0';
+static struct option long_options[]{
+    {"vinesauce", no_argument, NULL, 'v'},
+    {NULL, 0, NULL, 0}
+};
+bool vinesauce_enabled = false;
 
-int main(){
+int main(int argc, char** argv){
+    int c;
+    int option_idx = 0;
+    while ((c = getopt_long(argc, argv, "v", long_options, &option_idx)) != -1){
+        switch(c){
+            case 'v':
+                vinesauce_enabled = true;
+                break;
+            default:
+                break;
+        }
+    }
+
+
+
     srand(time(NULL));
     Field gameBoard;
     auto inputEvent = [](){
@@ -13,7 +32,11 @@ int main(){
             INPUT = getch();
         }
     };
+    auto playsound = [](){
+        // FIXME: Find way to play sound
+    };
     thread handler(inputEvent);
+    thread sound;
     vector<int> elim_lines;
     
     Piece roster[7];
@@ -76,6 +99,7 @@ int main(){
         if(gameBoard.Colliders(curr, R, 'd')){
             if(gameBoard.Eliminate(elim_lines)){
                 gameBoard.Cascade(elim_lines);
+                if(vinesauce_enabled){sound = thread(playsound);}
             };
             gameBoard.undraw();
             //sel = rand()%6;
@@ -89,5 +113,6 @@ int main(){
         }
         gameBoard.undraw();
     }
+    handler.~thread();
     return 0;
 }
