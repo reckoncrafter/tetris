@@ -53,7 +53,7 @@ int main(int argc, char** argv){
     
     for(int i = 0; i < 7; i++){
         roster[i].offset.x = 5;
-        roster[i].offset.y = 24;
+        roster[i].offset.y = 23;
     }
     
 
@@ -93,31 +93,38 @@ int main(int argc, char** argv){
                     gameBoard.spawn(curr, R);
                     break;
                 case 's':
+                    if(gameBoard.Colliders(curr, R, 'd')){
+                        break;
+                    }
                     gameBoard.down(curr, 1, R);
                     break;
                 default:
                     break;
             }
             INPUT = '\0';
-        }
-        if(gameBoard.Colliders(curr, R, 'd')){
-            if(gameBoard.Eliminate(elim_lines)){
-                gameBoard.Cascade(elim_lines);
-                // if(vinesauce_enabled){sound = thread(playsound);}
-            };
-            
-            // END GAME
-            if(curr.offset.y > 23){
-                exit(EXIT_SUCCESS);
-            }
-
-            gameBoard.undraw();
-            sel = rand()%7;
-            curr = roster[sel];
-            continue;
-            // breaking here causes a core dump
-        }        
+        } 
         if(intervalCounter >= 8){
+            // collider check block moved here
+            // because it allows block sliding
+            // by only checking the colliders on the interval
+            // and checking before the next move down
+            if(gameBoard.Colliders(curr, R, 'd')){
+                if(gameBoard.Eliminate(elim_lines)){
+                    gameBoard.Cascade(elim_lines);
+                    // if(vinesauce_enabled){sound = thread(playsound);}
+                };
+
+                // END GAME
+                if(curr.offset.y > 22){
+                    exit(EXIT_SUCCESS);
+                }
+
+                gameBoard.undraw();
+                sel = rand()%7;
+                curr = roster[sel];
+                continue;
+                // breaking here causes a core dump
+            }       
             gameBoard.down(curr,1,R);
             intervalCounter = 0;
         }
