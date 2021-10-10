@@ -241,7 +241,7 @@ class Field{
         y = temp;
     }
     void Cascade(std::vector<int> &lines){
-        for(auto c = lines.begin(); c < lines.end(); c++){
+        for(auto c = lines.begin(); c != lines.end(); c++){
             for(int i = *c; i < 27; i++){
                 for(int j = 1; j < 11; j++){
                     if(grid[j][i] == 1){
@@ -266,7 +266,7 @@ class Field{
                 for(int j = 1; j < 11; j++){
                     grid[j][i] = 0;
                 }
-                lines.push_back(i);
+                lines.push_back(i-2); // Why does -2 make line clearing work?
                 rtn = true;
             }
         }

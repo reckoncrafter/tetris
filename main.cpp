@@ -39,7 +39,7 @@ int main(){
     test.offset.x = 5;
     test.offset.y = 10;
     */
-    int sel = rand()%6;
+    int sel = 3;
     Rotation R = Zeroth;
     int intervalCounter = 0;
     Piece curr = roster[sel];
@@ -80,7 +80,7 @@ int main(){
                 gameBoard.Cascade(elim_lines);
             };
             gameBoard.undraw();
-            sel = rand()%6;
+            //sel = rand()%6;
             curr = roster[sel];
             continue;
             // breaking here causes a core dump
