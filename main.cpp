@@ -10,6 +10,7 @@ static struct option long_options[]{
 };
 bool vinesauce_enabled = false;
 
+
 int main(int argc, char** argv){
     int c;
     int option_idx = 0;
@@ -32,9 +33,11 @@ int main(int argc, char** argv){
             INPUT = getch();
         }
     };
+    /*
     auto playsound = [](){
-        // FIXME: Find way to play sound
+        system("cvlc vinesauce.mp3 2&> /dev/null");
     };
+    */
     thread handler(inputEvent);
     thread sound;
     vector<int> elim_lines;
@@ -99,7 +102,7 @@ int main(int argc, char** argv){
         if(gameBoard.Colliders(curr, R, 'd')){
             if(gameBoard.Eliminate(elim_lines)){
                 gameBoard.Cascade(elim_lines);
-                if(vinesauce_enabled){sound = thread(playsound);}
+                // if(vinesauce_enabled){sound = thread(playsound);}
             };
             gameBoard.undraw();
             //sel = rand()%6;
