@@ -10,7 +10,7 @@ An implementation of Tetris that runs in the terminal, written for practice in C
   - > Perhaps I should've used vectors...
 - [x] Fix the bug that causes blocks to stop falling
 - [x] Add end game state
-- [ ] Add block sliding
+- [x] Add block sliding
 - [ ] Add correct tetromino alignments
 - [ ] Add tetris standard drop order
 - [ ] Add color graphics
