@@ -8,7 +8,7 @@ An implementation of Tetris that runs in the terminal, written for practice in C
 - [x] Add main game loop
 - [x] Add line elimination
   - > Perhaps I should've used vectors...
-- [ ] Fix the bug that causes blocks to stop falling
+- [x] Fix the bug that causes blocks to stop falling
 - [ ] Add end game state
 - [ ] Add block sliding
 - [ ] Add correct tetromino alignments
