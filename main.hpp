@@ -5,6 +5,7 @@
 #include <random>
 #include <time.h>
 #include <vector>
+#define TICK 65536
 
 char getch() {
         char buf = 0;
@@ -249,6 +250,9 @@ class Field{
                     }
                 }
             }
+            undraw();
+            draw();
+            usleep(TICK*2);
         }
         lines.clear();
     }
@@ -266,6 +270,9 @@ class Field{
                 for(int j = 1; j < 11; j++){
                     grid[j][i] = 0;
                 }
+                undraw();
+                draw();
+                usleep(TICK*2);
                 lines.push_back(i-2); // Why does -2 make line clearing work?
                 rtn = true;
             }

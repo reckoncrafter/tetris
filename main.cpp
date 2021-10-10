@@ -1,8 +1,6 @@
 #include "main.hpp"
 #include "constrained.h"
 
-#define TICK 65536
-
 using namespace std;
 
 volatile char INPUT = '\0';
