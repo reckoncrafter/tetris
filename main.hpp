@@ -4,6 +4,7 @@
 #include <thread>
 #include <random>
 #include <time.h>
+#include <vector>
 
 char getch() {
         char buf = 0;
@@ -233,7 +234,25 @@ class Field{
             std::cout << "\033[A" << "\r";
         }
     }
-    bool Eliminate(){
+   
+    void pointswap(int &x, int &y){
+        int temp = x;
+        x = y;
+        y = temp;
+    }
+    void Cascade(std::vector<int> &lines){
+        for(auto c = lines.begin(); c < lines.end(); c++){
+            for(int i = *c; i < 27; i++){
+                for(int j = 1; j < 11; j++){
+                    if(grid[j][i] == 1){
+                        pointswap(grid[j][i], grid[j][i-1]);
+                    }
+                }
+            }
+        }
+        lines.clear();
+    }
+    bool Eliminate(std::vector<int> &lines){
         bool elim = true;
         bool rtn = false;
         for(int i = 1; i < 27; i++){
@@ -247,25 +266,12 @@ class Field{
                 for(int j = 1; j < 11; j++){
                     grid[j][i] = 0;
                 }
+                lines.push_back(i);
                 rtn = true;
             }
         }
         return rtn;
-    }
-    void pointswap(int &x, int &y){
-        int temp = x;
-        x = y;
-        y = temp;
-    }
-    void Cascade(){
-         for(int i = 1; i < 27; i++){
-            for(int j = 1; j < 11; j++){
-                if(grid[j][i] == 1){
-                    pointswap(grid[j][i], grid[j][i-1]);
-                }
-            }
-         }
-    }
+    } 
     bool Colliders(const Piece P, Rotation r, char side){
         point* colliders = new point[4]();
         bool collision = false;

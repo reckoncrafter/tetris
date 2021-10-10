@@ -16,7 +16,7 @@ int main(){
         }
     };
     thread handler(inputEvent);
-
+    vector<int> elim_lines;
     
     Piece roster[7];
     roster[0].init(tetriminos::L_l,tetriminos::FirstRotation::L_l,tetriminos::SecondRotation::L_l,tetriminos::ThirdRotation::L_l);
@@ -76,9 +76,9 @@ int main(){
             INPUT = '\0';
         }
         if(gameBoard.Colliders(curr, R, 'd')){
-            if(gameBoard.Eliminate()){
-                gameBoard.Cascade();
-            }
+            if(gameBoard.Eliminate(elim_lines)){
+                gameBoard.Cascade(elim_lines);
+            };
             gameBoard.undraw();
             sel = rand()%6;
             curr = roster[sel];
