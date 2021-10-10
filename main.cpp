@@ -53,7 +53,7 @@ int main(int argc, char** argv){
     
     for(int i = 0; i < 7; i++){
         roster[i].offset.x = 5;
-        roster[i].offset.y = 20;
+        roster[i].offset.y = 24;
     }
     
 
@@ -63,12 +63,13 @@ int main(int argc, char** argv){
     test.offset.x = 5;
     test.offset.y = 10;
     */
-    int sel = 3;
+    int sel = rand()%7;
     Rotation R = Zeroth;
     int intervalCounter = 0;
     Piece curr = roster[sel];
     while(true){
         gameBoard.draw();
+        
         usleep(TICK);
         intervalCounter++;
         
@@ -104,8 +105,14 @@ int main(int argc, char** argv){
                 gameBoard.Cascade(elim_lines);
                 // if(vinesauce_enabled){sound = thread(playsound);}
             };
+            
+            // END GAME
+            if(curr.offset.y > 23){
+                exit(EXIT_SUCCESS);
+            }
+
             gameBoard.undraw();
-            //sel = rand()%6;
+            sel = rand()%7;
             curr = roster[sel];
             continue;
             // breaking here causes a core dump
