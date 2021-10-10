@@ -218,7 +218,7 @@ class Field{
                     case 1:
                         std::cout << "[*]";
                         break;
-                    case 9:
+                    case 9: // 9 is wall
                         std::cout << "[#]";
                         break;
                     default:
@@ -250,6 +250,7 @@ class Field{
                     }
                 }
             }
+            // visualizing cascade
             undraw();
             draw();
             usleep(TICK*2);
@@ -270,6 +271,7 @@ class Field{
                 for(int j = 1; j < 11; j++){
                     grid[j][i] = 0;
                 }
+                // visualizing line elimination
                 undraw();
                 draw();
                 usleep(TICK*2);
