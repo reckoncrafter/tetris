@@ -15,3 +15,10 @@ An implementation of Tetris that runs in the terminal, written for practice in C
 - [ ] Add tetris standard drop order
 - [ ] Add color graphics
 - [ ] Add game acceleration
+
+## Installation (but why would you want that?)
+```sh
+git clone https:://github.com/reckoncrafter/tetris.git
+cd tetris
+make
+```
