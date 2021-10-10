@@ -110,7 +110,7 @@ int main(int argc, char** argv){
             continue;
             // breaking here causes a core dump
         }        
-        if(intervalCounter == 8){
+        if(intervalCounter >= 8){
             gameBoard.down(curr,1,R);
             intervalCounter = 0;
         }
