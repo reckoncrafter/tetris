@@ -11,12 +11,17 @@ An implementation of Tetris that runs in the terminal, written for practice in C
 - [x] Fix the bug that causes blocks to stop falling
 - [x] Add end game state
 - [x] Add block sliding
-- [ ] Add correct tetromino alignments
+- [x] Add correct tetromino alignments
 - [ ] Add tetris standard drop order
+- [ ] Prevent rotation from causing clipping (offset bumping)
 - [ ] Add color graphics
 - [ ] Add game acceleration
+- [ ] Support Windows 🪟
 
 ## Installation (but why would you want that?)
+:warning: Because of the termios.h library, this software only runs on Linux 🐧.
+A windows compatible version is planned if possible.
+
 ```sh
 git clone https:://github.com/reckoncrafter/tetris.git
 cd tetris
