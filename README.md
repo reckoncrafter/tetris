@@ -12,8 +12,10 @@ An implementation of Tetris that runs in the terminal, written for practice in C
 - [x] Add end game state
 - [x] Add block sliding
 - [x] Add correct tetromino alignments
-- [ ] Add tetris standard drop order
-- [ ] Prevent rotation from causing clipping (offset bumping)
+- [x] Add tetris standard drop order
+  - Created bags branch. Will merge branch when I have a working implementation.
+- [x] Prevent rotation from causing clipping (offset bumping)
+  - Pieces will no longer be allowed to rotate if rotation would cause clipping.
 - [ ] Add color graphics
 - [ ] Add game acceleration
 - [ ] Support Windows 🪟

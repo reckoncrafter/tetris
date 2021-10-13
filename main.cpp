@@ -74,6 +74,7 @@ int main(int argc, char** argv){
         intervalCounter++;
         
         if(INPUT != '\0'){
+            Rotation tmp_r = R;
             switch(INPUT){
                 case 'a':
                     if(gameBoard.Colliders(curr, R, 'l')){
@@ -89,7 +90,10 @@ int main(int argc, char** argv){
                     break;
                 case 'r':
                     gameBoard.despawn(curr, R);
-                    operator ++(R);
+                    ++R;
+                    if(gameBoard.willClip(curr, R)){
+                        --R;
+                    }
                     gameBoard.spawn(curr, R);
                     break;
                 case 's':

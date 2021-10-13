@@ -47,7 +47,26 @@ Rotation& operator ++(Rotation& r){
             break;
     }
     return r;
-} 
+}
+Rotation& operator --(Rotation& r){
+    switch(r){
+        case Zeroth:
+            r = Third;
+            break;
+        case First:
+            r = Zeroth;
+            break;
+        case Second:
+            r = First;
+            break;
+        case Third:
+            r = Second;
+            break;
+        default:
+            break;
+    }
+    return r;
+}
 
 struct point{
     int x,y;
@@ -285,7 +304,16 @@ class Field{
             }
         }
         return rtn;
-    } 
+    }
+    bool willClip(const Piece P, Rotation r){
+        bool rtn = false;
+        for(int i = 0; i < 4; i++){
+            if(grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y] != 0){
+                rtn = true;
+            }
+        }
+        return rtn;
+    }
     bool Colliders(const Piece P, Rotation r, char side){
         point* colliders = new point[4]();
         bool collision = false;
