@@ -43,12 +43,12 @@ int main(int argc, char** argv){
     vector<int> elim_lines;
     
     Piece roster[7];
-    roster[0].init(tetriminos::L_l,tetriminos::FirstRotation::L_l,tetriminos::SecondRotation::L_l,tetriminos::ThirdRotation::L_l);
-    roster[1].init(tetriminos::L_r,tetriminos::FirstRotation::L_r,tetriminos::SecondRotation::L_r,tetriminos::ThirdRotation::L_r);
+    roster[0].init(tetriminos::J,tetriminos::FirstRotation::J,tetriminos::SecondRotation::J,tetriminos::ThirdRotation::J);
+    roster[1].init(tetriminos::L,tetriminos::FirstRotation::L,tetriminos::SecondRotation::L,tetriminos::ThirdRotation::L);
     roster[2].init(tetriminos::O,tetriminos::O,tetriminos::O,tetriminos::O);
     roster[3].init(tetriminos::I,tetriminos::FirstRotation::I,tetriminos::I,tetriminos::FirstRotation::I);
-    roster[4].init(tetriminos::S_l,tetriminos::FirstRotation::S_l,tetriminos::S_l,tetriminos::FirstRotation::S_l);
-    roster[5].init(tetriminos::S_r,tetriminos::FirstRotation::S_r,tetriminos::S_r,tetriminos::FirstRotation::S_r);
+    roster[4].init(tetriminos::Z,tetriminos::FirstRotation::Z,tetriminos::Z,tetriminos::FirstRotation::Z);
+    roster[5].init(tetriminos::S,tetriminos::FirstRotation::S,tetriminos::S,tetriminos::FirstRotation::S);
     roster[6].init(tetriminos::T,tetriminos::FirstRotation::T,tetriminos::SecondRotation::T,tetriminos::ThirdRotation::T);
     
     for(int i = 0; i < 7; i++){
