@@ -10,6 +10,15 @@ static struct option long_options[]{
 };
 bool vinesauce_enabled = false;
 
+vector<int> generate_bag(){
+    vector<int> bag;
+    for(int i = 0; i < 7; i++){
+        bag.push_back(i);
+    }
+    random_shuffle(bag.begin(), bag.end());
+    return bag;
+}
+
 
 int main(int argc, char** argv){
     int c;
@@ -63,10 +72,11 @@ int main(int argc, char** argv){
     test.offset.x = 5;
     test.offset.y = 10;
     */
-    int sel = rand()%7;
+    vector<int> bag = generate_bag();
+    int selector = 0;
     Rotation R = Zeroth;
     int intervalCounter = 0;
-    Piece curr = roster[sel];
+    Piece curr = roster[bag.at(selector)];
     while(true){
         gameBoard.draw();
         
@@ -124,8 +134,14 @@ int main(int argc, char** argv){
                 }
 
                 gameBoard.undraw();
-                sel = rand()%7;
-                curr = roster[sel];
+                if(selector >= 6){
+                    bag = generate_bag();
+                    selector = 0;
+                }
+                else{
+                    selector++;
+                }
+                curr = roster[bag.at(selector)];
                 continue;
                 // breaking here causes a core dump
             }       

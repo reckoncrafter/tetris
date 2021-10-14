@@ -6,6 +6,7 @@
 #include <random>
 #include <time.h>
 #include <vector>
+#include <algorithm>
 #define TICK 65536
 
 char getch() {
