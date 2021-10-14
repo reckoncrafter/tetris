@@ -267,7 +267,8 @@ class Field{
         y = temp;
     }
     void Cascade(std::vector<int> &lines){
-        for(auto c = lines.end(); c != lines.begin(); c--){
+        auto c = lines.rbegin();
+        do{
             for(int i = *c; i < 27; i++){
                 for(int j = 1; j < 11; j++){
                     if(grid[j][i] == 1 && i != 1){
@@ -279,7 +280,8 @@ class Field{
             undraw();
             draw();
             usleep(TICK*2);
-        }
+            c++;
+        } while(c != lines.rend());
         lines.clear();
     }
     bool Eliminate(std::vector<int> &lines){
