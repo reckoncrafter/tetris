@@ -118,7 +118,7 @@ int main(int argc, char** argv){
             }
             input_hold = '\0';
         } 
-        if(intervalCounter >= 1){
+        if(intervalCounter >= 2){
             // collider check block moved here
             // because it allows block sliding
             // by only checking the colliders on the interval
