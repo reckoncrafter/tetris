@@ -1,8 +1,9 @@
 #include "main.hpp"
 
+
 using namespace std;
 
-volatile char INPUT = '\0';
+volatile char input_hold = '\0';
 static struct option long_options[]{
     {"vinesauce", no_argument, NULL, 'v'},
     {NULL, 0, NULL, 0}
@@ -16,6 +17,12 @@ vector<int> generate_bag(){
     }
     random_shuffle(bag.begin(), bag.end());
     return bag;
+}
+
+DWORD WINAPI input_thread(LPVOID lpParameter){
+    while(true){
+        input_hold = getch();
+    }
 }
 
 
@@ -36,18 +43,9 @@ int main(int argc, char** argv){
 
     srand(time(NULL));
     Field gameBoard;
-    auto inputEvent = [](){
-        while(true){
-            INPUT = getch();
-        }
-    };
-    /*
-    auto playsound = [](){
-        system("cvlc vinesauce.mp3 2&> /dev/null");
-    };
-    */
-    thread handler(inputEvent);
-    thread sound;
+    //thread handler(inputEvent);
+    DWORD input_thread_ID;
+    HANDLE input_handle = CreateThread(0,0,input_thread,0,0,&input_thread_ID);
     vector<int> elim_lines;
     
     Piece roster[7];
@@ -86,9 +84,9 @@ int main(int argc, char** argv){
         usleep(TICK);
         intervalCounter++;
         
-        if(INPUT != '\0'){
+        if(input_hold != '\0'){
             Rotation tmp_r = R;
-            switch(INPUT){
+            switch(input_hold){
                 case 'a':
                     if(gameBoard.Colliders(curr, R, 'l')){
                         break;
@@ -118,9 +116,9 @@ int main(int argc, char** argv){
                 default:
                     break;
             }
-            INPUT = '\0';
+            input_hold = '\0';
         } 
-        if(intervalCounter >= 8){
+        if(intervalCounter >= 1){
             // collider check block moved here
             // because it allows block sliding
             // by only checking the colliders on the interval
@@ -153,6 +151,5 @@ int main(int argc, char** argv){
         }
         gameBoard.undraw();
     }
-    handler.~thread();
     return 0;
 }

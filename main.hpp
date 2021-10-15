@@ -1,5 +1,5 @@
 #include <iostream>
-#include <termios.h>
+#include <conio.h>
 #include <unistd.h>
 #include <getopt.h>
 #include <thread>
@@ -7,8 +7,10 @@
 #include <time.h>
 #include <vector>
 #include <algorithm>
+#include <windows.h>
 #define TICK 65536
 
+/*
 char getch() {
         char buf = 0;
         struct termios old = {0};
@@ -28,6 +30,7 @@ char getch() {
                 perror ("tcsetattr ~ICANON");
         return (buf);
 }
+*/
 
 enum Rotation{Zeroth = 0, First = 4, Second = 8, Third = 12};
 Rotation& operator ++(Rotation& r){
@@ -238,34 +241,34 @@ class Field{
                 
                 switch(grid[j][i]){
                     case 0:
-                        std::cout <<"\033[0;30m" << u8"\u2588\u2588\u2588" << "\033[0m";
+                        std::cout <<"\033[0;30m" << u8"[*]" << "\033[0m";
                         break;
                     case 1: // CYAN
-                        std::cout << "\033[38;5;51m" << u8"\u2588\u2588\u2588" << "\033[0m";
+                        std::cout << "\033[38;5;51m" << u8"[*]" << "\033[0m";
                         break;
                     case 2: // BLUE
-                        std::cout << "\033[38;5;21m" << u8"\u2588\u2588\u2588" << "\033[0m";
+                        std::cout << "\033[38;5;21m" << u8"[*]" << "\033[0m";
                         break;
                     case 3: // ORANGE
-                        std::cout << "\033[38;5;166m" << u8"\u2588\u2588\u2588" << "\033[0m";
+                        std::cout << "\033[38;5;166m" << u8"[*]" << "\033[0m";
                         break;
                     case 4: // YELLOW
-                        std::cout << "\033[38;5;184m" << u8"\u2588\u2588\u2588" << "\033[0m";
+                        std::cout << "\033[38;5;184m" << u8"[*]" << "\033[0m";
                         break;
                     case 5: // GREEN
-                        std::cout << "\033[38;5;34m" << u8"\u2588\u2588\u2588" << "\033[0m";
+                        std::cout << "\033[38;5;34m" << u8"[*]" << "\033[0m";
                         break;
                     case 6: // PURPLE
-                        std::cout << "\033[38;5;56m" << u8"\u2588\u2588\u2588" << "\033[0m";
+                        std::cout << "\033[38;5;56m" << u8"[*]" << "\033[0m";
                         break;
                     case 7: // RED
-                        std::cout << "\033[38;5;124m" << u8"\u2588\u2588\u2588" << "\033[0m";
+                        std::cout << "\033[38;5;124m" << u8"[*]" << "\033[0m";
                         break;
                     case 9: // 9 is wall
-                        std::cout << u8"\u2588\u2588\u2588";
+                        std::cout << u8"###";
                         break;
                     default:
-                        std::cout << u8"\u2588\u2588\u2588";
+                        std::cout << u8"$$$";
                         break;
                 }
                 
