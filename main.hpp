@@ -160,7 +160,7 @@ public:
     point shape[4*4];
 
     point offset;
-    
+    int color;
 
     Piece(){
         for(int i = 0; i < 16; i++){
@@ -204,7 +204,7 @@ class Field{
     }
     void spawn(Piece P, Rotation r){
         for(int i = 0; i < 4; i++){
-            grid[P.shape[i+r].x + P.offset.x][P.shape[i+r].y + P.offset.y] = 1;
+            grid[P.shape[i+r].x + P.offset.x][P.shape[i+r].y + P.offset.y] = P.color;
         }
     }
     void despawn(Piece P, Rotation r){
@@ -238,16 +238,34 @@ class Field{
                 
                 switch(grid[j][i]){
                     case 0:
-                        std::cout << u8"\u2588\u2588\u2588";
+                        std::cout <<"\033[0;30m" << u8"\u2588\u2588\u2588" << "\033[0m";
                         break;
-                    case 1:
-                        std::cout << u8"\u2588\u2588\u2588";
+                    case 1: // CYAN
+                        std::cout << "\033[38;5;51m" << u8"\u2588\u2588\u2588" << "\033[0m";
+                        break;
+                    case 2: // BLUE
+                        std::cout << "\033[38;5;21m" << u8"\u2588\u2588\u2588" << "\033[0m";
+                        break;
+                    case 3: // ORANGE
+                        std::cout << "\033[38;5;166m" << u8"\u2588\u2588\u2588" << "\033[0m";
+                        break;
+                    case 4: // YELLOW
+                        std::cout << "\033[38;5;184m" << u8"\u2588\u2588\u2588" << "\033[0m";
+                        break;
+                    case 5: // GREEN
+                        std::cout << "\033[38;5;34m" << u8"\u2588\u2588\u2588" << "\033[0m";
+                        break;
+                    case 6: // PURPLE
+                        std::cout << "\033[38;5;56m" << u8"\u2588\u2588\u2588" << "\033[0m";
+                        break;
+                    case 7: // RED
+                        std::cout << "\033[38;5;124m" << u8"\u2588\u2588\u2588" << "\033[0m";
                         break;
                     case 9: // 9 is wall
-                        std::cout << "[#]";
+                        std::cout << u8"\u2588\u2588\u2588";
                         break;
                     default:
-                        std::cout << "[E]";
+                        std::cout << u8"\u2588\u2588\u2588";
                         break;
                 }
                 
@@ -271,7 +289,7 @@ class Field{
         do{
             for(int i = *c; i < 27; i++){
                 for(int j = 1; j < 11; j++){
-                    if(grid[j][i] == 1 && i != 1){
+                    if(grid[j][i] != 0 && i != 1){
                         pointswap(grid[j][i], grid[j][i-1]);
                     }
                 }
@@ -323,48 +341,48 @@ class Field{
         switch(side){
             case 'd': // below (down)
                 for(int i = 0; i < 4; i++){
-                    grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y] = 2;
+                    grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y] = 10;
                 }
                 for(int i = 0; i < 4; i++){
                     int* below = &grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y-1];
                                                                                         //  ^
-                    if(*below == 1 || *below == 9){
+                    if(*below != 10 && *below != 0){
                         collision = true;
                     }
                 }
                 for(int i = 0; i < 4; i++){
-                    grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y] = 1;
+                    grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y] = P.color;
                 }
                 break;
             case 'l': // left side
                 for(int i = 0; i < 4; i++){
-                    grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y] = 2;
+                    grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y] = 10;
                 }
                 for(int i = 0; i < 4; i++){
                     int* atleft = &grid[P.shape[i+r].x+P.offset.x-1][P.shape[i+r].y+P.offset.y];
                                                                 //^
-                    if(*atleft == 1 || *atleft == 9){
+                    if(*atleft != 10 && *atleft != 0){
                         collision = true;
                     }
                 }
                 for(int i = 0; i < 4; i++){
-                    grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y] = 1;
+                    grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y] = P.color;
                 }
                 break;
 
             case 'r': // right side
                 for(int i = 0; i < 4; i++){
-                    grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y] = 2;
+                    grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y] = 10;
                 }
                 for(int i = 0; i < 4; i++){
                     int* atright = &grid[P.shape[i+r].x+P.offset.x+1][P.shape[i+r].y+P.offset.y];
                                                                 // ^
-                    if(*atright == 1 || *atright == 9){
+                    if(*atright != 10 && *atright != 0){
                         collision = true;
                     }
                 }
                 for(int i = 0; i < 4; i++){
-                    grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y] = 1;
+                    grid[P.shape[i+r].x+P.offset.x][P.shape[i+r].y+P.offset.y] = P.color;
                 }
                 break;
             default:

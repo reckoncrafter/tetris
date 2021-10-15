@@ -1,5 +1,4 @@
 #include "main.hpp"
-#include "constrained.h"
 
 using namespace std;
 
@@ -52,13 +51,17 @@ int main(int argc, char** argv){
     vector<int> elim_lines;
     
     Piece roster[7];
-    roster[0].init(tetriminos::J,tetriminos::FirstRotation::J,tetriminos::SecondRotation::J,tetriminos::ThirdRotation::J);
-    roster[1].init(tetriminos::L,tetriminos::FirstRotation::L,tetriminos::SecondRotation::L,tetriminos::ThirdRotation::L);
-    roster[2].init(tetriminos::O,tetriminos::O,tetriminos::O,tetriminos::O);
-    roster[3].init(tetriminos::I,tetriminos::FirstRotation::I,tetriminos::I,tetriminos::FirstRotation::I);
-    roster[4].init(tetriminos::Z,tetriminos::FirstRotation::Z,tetriminos::Z,tetriminos::FirstRotation::Z);
-    roster[5].init(tetriminos::S,tetriminos::FirstRotation::S,tetriminos::S,tetriminos::FirstRotation::S);
-    roster[6].init(tetriminos::T,tetriminos::FirstRotation::T,tetriminos::SecondRotation::T,tetriminos::ThirdRotation::T);
+    roster[0].init(tetriminos::I,tetriminos::FirstRotation::I,tetriminos::I,tetriminos::FirstRotation::I);
+    roster[1].init(tetriminos::J,tetriminos::FirstRotation::J,tetriminos::SecondRotation::J,tetriminos::ThirdRotation::J);
+    roster[2].init(tetriminos::L,tetriminos::FirstRotation::L,tetriminos::SecondRotation::L,tetriminos::ThirdRotation::L);
+    roster[3].init(tetriminos::O,tetriminos::O,tetriminos::O,tetriminos::O);
+    roster[4].init(tetriminos::S,tetriminos::FirstRotation::S,tetriminos::S,tetriminos::FirstRotation::S);
+    roster[5].init(tetriminos::T,tetriminos::FirstRotation::T,tetriminos::SecondRotation::T,tetriminos::ThirdRotation::T);
+    roster[6].init(tetriminos::Z,tetriminos::FirstRotation::Z,tetriminos::Z,tetriminos::FirstRotation::Z);
+
+    for(int i = 0; i < 7; i++){
+        roster[i].color = i+1;
+    }
     
     for(int i = 0; i < 7; i++){
         roster[i].offset.x = 5;
