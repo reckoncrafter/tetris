@@ -18,14 +18,16 @@ An implementation of Tetris that runs in the terminal, written for practice in C
   - Pieces will no longer be allowed to rotate if rotation would cause clipping.
 - [x] Add color graphics
 - [ ] Add game acceleration
-- [ ] Support Windows 🪟
+- [x] Support Windows 🪟
 
 ## Installation (but why would you want that?)
-:warning: Because of the termios.h library, this software only runs on Linux 🐧.
-A windows compatible version is planned if possible.
+:warning: This program can run on windows now, but it sucks.
 
+### Linux
 ```sh
 git clone https:://github.com/reckoncrafter/tetris.git
 cd tetris
 make
 ```
+### Windows
+[Download](https://github.com/reckoncrafter/tetris/releases/tag/windows)
