@@ -238,10 +238,10 @@ class Field{
                 
                 switch(grid[j][i]){
                     case 0:
-                        std::cout << "[ ]";
+                        std::cout << u8"\u2588\u2588\u2588";
                         break;
                     case 1:
-                        std::cout << "[*]";
+                        std::cout << u8"\u2588\u2588\u2588";
                         break;
                     case 9: // 9 is wall
                         std::cout << "[#]";
