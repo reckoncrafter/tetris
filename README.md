@@ -21,8 +21,7 @@ An implementation of Tetris that runs in the terminal, written for practice in C
 - [ ] Support Windows 🪟
 
 ## Installation (but why would you want that?)
-:warning: Because of the termios.h library, this software only runs on Linux 🐧.
-A windows compatible version is planned if possible.
+:warning: The windows branch contains windows-compatible code, but it only works on the Windows 11 Terminal. In reality, you should run the linux code on a WSL instance.
 
 ```sh
 git clone https:://github.com/reckoncrafter/tetris.git
