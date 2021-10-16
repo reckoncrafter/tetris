@@ -7,7 +7,8 @@
 #include <time.h>
 #include <vector>
 #include <algorithm>
-#define TICK 65536
+
+static int TICK = 65536;
 
 char getch() {
         char buf = 0;

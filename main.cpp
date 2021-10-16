@@ -18,6 +18,8 @@ vector<int> generate_bag(){
     return bag;
 }
 
+int lines_cleared = 0;
+
 
 int main(int argc, char** argv){
     int c;
@@ -127,9 +129,15 @@ int main(int argc, char** argv){
             // and checking before the next move down
             if(gameBoard.Colliders(curr, R, 'd')){
                 if(gameBoard.Eliminate(elim_lines)){
+                    lines_cleared += elim_lines.size();
                     gameBoard.Cascade(elim_lines);
                     // if(vinesauce_enabled){sound = thread(playsound);}
                 };
+            
+            if(lines_cleared >= 8){
+                TICK = TICK *.60;
+                lines_cleared = 0;
+            }
 
                 // END GAME
                 if(curr.offset.y > 22){

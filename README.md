@@ -17,7 +17,7 @@ An implementation of Tetris that runs in the terminal, written for practice in C
 - [x] Prevent rotation from causing clipping (offset bumping)
   - Pieces will no longer be allowed to rotate if rotation would cause clipping.
 - [x] Add color graphics
-- [ ] Add game acceleration
+- [x] Add game acceleration
 - [ ] Support Windows 🪟
 
 ## Installation (but why would you want that?)
